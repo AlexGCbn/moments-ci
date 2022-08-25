@@ -30,7 +30,7 @@ export const CurrentUserProvider = ({ children }) => {
     axiosReq.interceptors.request.use(
       async (config) => {
         try {
-          await axios.post("/j-rest-auth/token/refresh/");
+          await axios.post("/dj-rest-auth/token/refresh/");
         } catch (err) {
           setCurrentUser((prevCurrentUser) => {
             if (prevCurrentUser) {
@@ -46,7 +46,7 @@ export const CurrentUserProvider = ({ children }) => {
         return Promise.reject(err);
       }
     );
-    axiosRes.interceptors.use(
+    axiosRes.interceptors.response.use(
       (response) => response,
       async (err) => {
         if (err.response?.status === 401) {
@@ -60,8 +60,9 @@ export const CurrentUserProvider = ({ children }) => {
               return null;
             });
           }
-          return Promise.reject(err);
+          return axios.Cancel(err.config);
         }
+        return Promise.reject(err);
       }
     );
   }, [history]);
