@@ -11,6 +11,7 @@ import Post from "./Post";
 
 import CommentCreateForm from "../comments/CommentCreateForm";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import Comment from "../comments/Comment";
 
 function PostPage() {
   const { id } = useParams();
@@ -58,7 +59,7 @@ function PostPage() {
           {comments.results.length ? (
             comments.results.map((comment) => (
               <p key={comment.id}>
-                {comment.owner}: {comment.content}
+                <Comment key={comment.id} {...comment} />
               </p>
             ))
           ) : currentUser ? (
